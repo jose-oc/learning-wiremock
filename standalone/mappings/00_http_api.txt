@@ -1,0 +1,5 @@
+# Run wiremock on port 9832
+java -jar wiremock-standalone-2.0.10-beta.jar --port 9832 --verbose
+
+# Check mappings configured
+http://localhost:9832/__admin

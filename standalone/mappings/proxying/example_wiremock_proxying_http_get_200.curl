@@ -1,0 +1,11 @@
+# Let's see when the request not match
+curl -D - \
+--proxy localhost:9832 \
+--header "Content-Type: text/xml" \
+-X GET http://echo.getpostman.com/get?test=value-to-not-match
+
+# Let's see when it matches
+curl -D - \
+--proxy localhost:9832 \
+--header "Content-Type: text/xml" \
+-X GET http://echo.getpostman.com/get?test=12345

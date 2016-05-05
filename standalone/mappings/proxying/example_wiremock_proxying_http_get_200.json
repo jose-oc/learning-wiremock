@@ -1,0 +1,24 @@
+{
+  "request": {
+    "method": "GET",
+    "urlPath": "/get",
+    "queryParameters": {
+      "test": {
+        "contains": "12345"
+      }
+    },
+    "headers": {
+      "HOST": {
+        "equalTo": "echo.getpostman.com"
+      }
+    }
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "Content-Type": "text/xml",
+      "Content-Length": "33"
+    },
+    "body": "<response>Some content</response>"
+  }
+}

@@ -1,0 +1,7 @@
+# Let's see when the request not match
+curl -D - \
+-X GET http://localhost:9832/simple/mapping/to/some/get?param1=value1
+
+# Let's see when it matches
+curl -D - \
+-X GET http://localhost:9832/simple/mapping/to/some/get
