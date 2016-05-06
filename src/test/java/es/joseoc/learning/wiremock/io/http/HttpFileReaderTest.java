@@ -5,6 +5,7 @@ import static com.github.tomakehurst.wiremock.client.WireMock.get;
 import static com.github.tomakehurst.wiremock.client.WireMock.head;
 import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
+import static com.github.tomakehurst.wiremock.http.Fault.MALFORMED_RESPONSE_CHUNK;
 import static org.hamcrest.core.StringContains.containsString;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
@@ -45,9 +46,9 @@ public class HttpFileReaderTest {
 			stubFor(head(urlEqualTo("/some-path/metadata.xml"))
 					.willReturn(aResponse()
 							.withStatus(200)
-			                .withHeader("Content-Type", "text/xml")
-			                .withHeader("Content-Length", Objects.toString(content.getBytes().length))
-			                .withBody(content)));
+							.withHeader("Content-Type", "text/xml")
+							.withHeader("Content-Length", Objects.toString(content.getBytes().length))
+							.withBody(content)));
 			
 			long actual = new HttpFileReader().getFileSize(URI.create("http://usuario:password@localhost:" + wireMockRule.port() + "/some-path/metadata.xml"));
 			
@@ -59,7 +60,7 @@ public class HttpFileReaderTest {
 			String content = "<response>Some content</response>";
 			stub200(content, "text/xml");
 			
-            String actual = new HttpFileReader().readFileAsString(URI.create("http://usuario:password@localhost:" + wireMockRule.port() + "/some-path/metadata.xml"));
+			String actual = new HttpFileReader().readFileAsString(URI.create("http://usuario:password@localhost:" + wireMockRule.port() + "/some-path/metadata.xml"));
 
 			assertEquals(content, actual);
 			assertEquals(content.getBytes().length, actual.length());
@@ -69,8 +70,8 @@ public class HttpFileReaderTest {
 		public void testListFilesWhenNoHref() throws Exception {
 			stub200("<response>Some content</response>", "text/xml");
 			
-            Collection<String> actual = new HttpFileReader().listFiles(
-            		URI.create("http://usuario:password@localhost:" + wireMockRule.port() + "/some-path/metadata.xml"));
+			Collection<String> actual = new HttpFileReader().listFiles(
+					URI.create("http://usuario:password@localhost:" + wireMockRule.port() + "/some-path/metadata.xml"));
 			
 			assertEquals(0, actual.size());
 		}
@@ -79,8 +80,8 @@ public class HttpFileReaderTest {
 		public void testListFiles() throws Exception {
 			stub200("<p>bla</p><a href=\"link\">link text</a><p>bla</p><a href=\"link2\">link text2</a>", "text/html");
 			
-            Collection<String> actual = new HttpFileReader().listFiles(
-                    URI.create("http://usuario:password@localhost:" + wireMockRule.port() + "/some-path/metadata.xml"));
+			Collection<String> actual = new HttpFileReader().listFiles(
+					URI.create("http://usuario:password@localhost:" + wireMockRule.port() + "/some-path/metadata.xml"));
 			
 			assertEquals(2, actual.size());
 		}
@@ -89,9 +90,9 @@ public class HttpFileReaderTest {
 			stubFor(get(urlEqualTo("/some-path/metadata.xml"))
 					.willReturn(aResponse()
 							.withStatus(200)
-			                .withHeader("Content-Type", contentType)
-			                .withHeader("Content-Length", Objects.toString(content.getBytes().length))
-			                .withBody(content)));
+							.withHeader("Content-Type", contentType)
+							.withHeader("Content-Length", Objects.toString(content.getBytes().length))
+							.withBody(content)));
 		}
 
 	}
@@ -133,9 +134,9 @@ public class HttpFileReaderTest {
 			stubFor(get(urlEqualTo("/some-path/metadata.xml"))
 					.willReturn(aResponse()
 							.withStatus(404)
-			                .withHeader("Content-Type", "text/html")
-			                .withHeader("Content-Length", Objects.toString(content.getBytes().length))
-			                .withBody(content)));
+							.withHeader("Content-Type", "text/html")
+							.withHeader("Content-Length", Objects.toString(content.getBytes().length))
+							.withBody(content)));
 		}
 	
 	}
@@ -175,10 +176,10 @@ public class HttpFileReaderTest {
 					.willReturn(aResponse()
 							.withStatus(405)
 							.withStatusMessage("Method Not Allowed")
-			                .withHeader("Content-Type", "text/html")
-			                .withHeader("Content-Length", Objects.toString(content.getBytes().length))
-			                .withHeader("Allow", "POST,PUT")
-			                .withBody(content)));
+							.withHeader("Content-Type", "text/html")
+							.withHeader("Content-Length", Objects.toString(content.getBytes().length))
+							.withHeader("Allow", "POST,PUT")
+							.withBody(content)));
 		}
 	
 	}
@@ -198,7 +199,6 @@ public class HttpFileReaderTest {
 			}
 			
 			assertTrue(actual instanceof HttpServerException);
-//			assertThat(actual.getMessage(), containsString("Content not found in the source http://usuario:password@localhost:" + wireMockRule.port() + "/some-path/metadata.xml returning the response: HttpResponseProxy{HTTP/1.1 404 Not Found"));
 			assertThat(actual.getMessage(), containsString("Error in the server. Source http://usuario:password@localhost:" + wireMockRule.port() + "/some-path/metadata.xml returning the response: HttpResponseProxy{HTTP/1.1 500 Server"));
 		}
 	
@@ -218,9 +218,9 @@ public class HttpFileReaderTest {
 			stubFor(get(urlEqualTo("/some-path/metadata.xml"))
 					.willReturn(aResponse()
 							.withStatus(500)
-			                .withHeader("Content-Type", "text/html")
-			                .withHeader("Content-Length", Objects.toString(content.getBytes().length))
-			                .withBody(content)));
+							.withHeader("Content-Type", "text/html")
+							.withHeader("Content-Length", Objects.toString(content.getBytes().length))
+							.withBody(content)));
 		}
 
 	}
@@ -241,7 +241,7 @@ public class HttpFileReaderTest {
 		public void testReadWhenCorruptedResponse() throws Exception {
 			stubFor(get(urlEqualTo("/some-path/metadata.xml"))
 					.willReturn(aResponse()
-							.withFault(Fault.MALFORMED_RESPONSE_CHUNK)));
+							.withFault(MALFORMED_RESPONSE_CHUNK)));
 			
 			URI uri = URI.create("http://usuario:password@localhost:" + wireMockRule.port() + "/some-path/metadata.xml");
 			new HttpFileReader().readFileAsString(uri);

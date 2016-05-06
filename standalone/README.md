@@ -67,3 +67,12 @@ curl -D - -X POST http://localhost:9832/__admin/reset
 ```
 curl -D - -X POST http://localhost:9832/__admin/shutdown
 ```
+
+### Set configuration
+
+```
+curl -D - -X POST http://localhost:9832/__admin/settings \
+--data '{
+    "fixedDelay": 500
+}'
+```
