@@ -1,0 +1,27 @@
+{
+  "scenarioName": "Example",
+  "requiredScenarioState": "Started",
+  "newScenarioState": "Step1",
+  "request": {
+    "urlPattern": "/data/info/[0-9]$",
+    "method": "POST",
+    "headers": {
+      "HOST": {
+        "equalTo": "internal.my.service:8888"
+      }
+    },
+    "bodyPatterns": [
+      {
+        "matchesJsonPath": "$.info.[?(@.user == 'jose')]"
+      },
+      {
+        "matchesJsonPath": "$.info.[?(@.title == 'my-piece-of-information')]"
+      }
+    ]
+  },
+  "response": {
+    "status": 200,
+    "proxyBaseUrl": "http://internal.my.service:8888"
+  }
+}
+

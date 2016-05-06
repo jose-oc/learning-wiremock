@@ -1,0 +1,17 @@
+{
+  "scenarioName": "Example",
+  "requiredScenarioState": "Step1",
+  "newScenarioState": "Started",
+  "request": {
+    "urlPath": "/oauth/token",
+    "method": "POST",
+    "headers": {
+      "HOST": {
+        "equalTo": "internal.my.service:8888"
+      }
+    }
+  },
+  "response": {
+    "status": 500
+  }
+}
