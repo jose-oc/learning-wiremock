@@ -20,6 +20,7 @@ curl -D - --proxy localhost:9832 --location http://echo-joseortiz.rhcloud.com/ec
 ```
 
 Now you'll have these mappings saved in json files under `mappings` and `__files` folders.
+This way (with browser proxying) we cannot hit a site with https.
 
 
 ## Faults
